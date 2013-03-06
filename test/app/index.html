@@ -24,7 +24,7 @@
     <div class="wrap">
       <nav class="bar-standard bar-header-secondary bar-scrolling">
         <form>
-          <input type="search" placeholder="Search">
+          <input type="search" id="moviesearch" placeholder="Search" onfocus="indexList('movies', 'moviesearch');" onkeyup="searchList('movies', 'moviesearch', this.value);">
         </form>
       </nav>
       <div class="slider">
@@ -40,8 +40,8 @@
           </li>
         </ul>
       </div>
-      <ul class="list">
-        <li class="list-divider">Recommended movies</li>
+      <ul class="list" id="movies">
+        <li class="list-divider" data-noindex="true">Recommended movies</li>
         <li>
           <a href="choose-theater.html">
             <strong>Argo</strong>
@@ -63,7 +63,7 @@
             <span class="chevron"></span>
           </a>
         </li>
-        <li class="list-divider">Top movies</li>
+        <li class="list-divider" data-noindex="true">Top movies</li>
         <li>
           <a href="choose-theater.html" data-transition="slide-in">
             <strong>Movie 4</strong>
