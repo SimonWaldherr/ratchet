@@ -1000,7 +1000,7 @@ window.onload = function() {
 }
 
 /* ----------------------------------
- * lunr v0.2.1
+ * lunr v0.2.2
  * http://lunrjs.com - A bit like Solr, but much smaller and not as bright
  * Copyright (C) 2013 Oliver Nightingale
  * Licensed under The MIT License
@@ -1017,7 +1017,7 @@ var lunr = function (config) {
   return idx
 }
 
-lunr.version = "0.2.1"
+lunr.version = "0.2.2"
 
 if (typeof module !== 'undefined') {
   module.exports = lunr
@@ -1195,19 +1195,19 @@ lunr.SortedSet.prototype.intersect = function (otherSet) {
 
     if (a[i] === b[j]) {
       intersectSet.add(a[i]);
-      i++; 
+      i++;
       j++;
-      continue
+      continue;
     }
 
     if (a[i] < b[j]) {
-      i++
-      continue
+      i++;
+      continue;
     }
 
     if (a[i] > b[j]) {
-      j++
-      continue
+      j++;
+      continue;
     }
   };
 
@@ -1337,10 +1337,15 @@ lunr.Index.prototype.search = function (query) {
       var set = this.tokenStore.expand(token).reduce(function (memo, key) {
         var pos = self.corpusTokens.indexOf(key),
             idf = self.idf(key),
+            exactMatchBoost = (key === token ? 10 : 1),
             set = new lunr.SortedSet
 
-        if (pos > -1) queryArr[pos] = tf * idf
+        // calculate the query tf-idf score for this token
+        // applying an exactMatchBoost to ensure these rank
+        // higher than expanded terms
+        if (pos > -1) queryArr[pos] = tf * idf * exactMatchBoost
 
+        // add all the documents that have this key into a set
         Object.keys(self.tokenStore.get(key)).forEach(function (ref) { set.add(ref) })
 
         return memo.union(set)
